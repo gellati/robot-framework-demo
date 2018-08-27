@@ -1,0 +1,19 @@
+sudo: required
+
+language: python
+
+services:
+  - docker
+
+before_script:
+  - sudo apt-get install docker-ce python-pip -y
+  - sudo pip install docker-compose robotframework
+
+before_install:
+  - docker-compose up
+
+script:
+  - ./setupandrun.sh
+
+notifications:
+  email: false
