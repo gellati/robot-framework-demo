@@ -38,7 +38,12 @@ ${USER_PAGE_LAST_CONNECTION}    Last connection
 ### Keywords used in setup and teardown ###
 
 Go to Redmine
-    Open Browser    ${REDMINE}   ${BROWSER}
+    ${chrome_options} =  Evaluate             sys.modules['selenium.webdriver'].ChromeOptions()   sys, selenium.webdriver
+    Call Method          ${chrome_options}    add_argument    headless
+    Call Method          ${chrome_options}    add_argument    disable-gpu
+    Create Webdriver     Chrome               chrome_options=${chrome_options}
+    Set Window Size      1500                 1500
+    Go To                ${REDMINE}
 
 Close Application
     Close Browser

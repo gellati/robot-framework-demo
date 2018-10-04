@@ -6,7 +6,9 @@ This setup demonstrates [Robot Framework](http://robotframework.org) tests run a
 
 ## Setup
 
-Initial requirements for this to work are Docker and Robot Framework installed on the computer.
+Initial requirements for this to work are Docker and Robot Framework installed on the computer. Robot Framework can be installed from the `requirements.txt` file with
+
+    pip install -r requirements.txt
 
 The file `docker-compose.yml` contains a Dockerized container for Redmine. The dockerfile builds up a small microservice architecture consisting of two services, Redmine and a MariaDB database. Build and start the containers with
 
@@ -50,3 +52,20 @@ The script `run.sh` also contains the needed commands to run the tests. Just run
     ./run.sh
 
 Make sure that the script is executable, i.e. `chmod +x run.sh`.
+
+The test framework has been configured to run in headless mode according to [these instructions](https://spage.fi/headless-selenium-rf).
+
+In the file `keywords.robot`, these lines make Robot Framework run in headless mode:
+
+    Go to Redmine
+        ${chrome_options} =  Evaluate             sys.modules['selenium.webdriver'].ChromeOptions()   sys, selenium.webdriver
+        Call Method          ${chrome_options}    add_argument    headless
+        Call Method          ${chrome_options}    add_argument    disable-gpu
+        Create Webdriver     Chrome               chrome_options=${chrome_options}
+        Set Window Size      1500                 1500
+        Go To                ${REDMINE}
+
+To run the test in normal mode, replace the lines above with the following:
+
+    Go to Redmine
+        Open Browser       ${REDMINE}           ${BROWSER}
