@@ -2,6 +2,15 @@ version: '2'
 
 # user/bitnami1
 services:
+#  robot:
+#    build:
+#      context: .
+#      dockerfile: robotubuntu.dev
+#    environment:
+#       - DISPLAY=localhost:0.0
+#    depends_on:
+#      - mariadb
+#      - redmine
   mariadb:
     image: 'bitnami/mariadb:latest'
     environment:

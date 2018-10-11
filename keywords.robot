@@ -1,9 +1,10 @@
 *** Settings ***
-Library                 Selenium2Library
+Library                 SeleniumLibrary
 
 *** Variables ***
 ${REDMINE}                http://localhost
 ${BROWSER}                chrome
+#${BROWSER}                firefox
 ${VALID USERNAME}         user
 ${VALID PASSWORD}         bitnami1
 ${INVALID USERNAME}       notvalid@notvalid.fi
@@ -37,13 +38,38 @@ ${USER_PAGE_LAST_CONNECTION}    Last connection
 
 ### Keywords used in setup and teardown ###
 
+# following for use of Chrome webbrowser
+# Go to Redmine
+#     ${chrome_options} =  Evaluate             sys.modules['selenium.webdriver'].ChromeOptions()   sys, selenium.webdriver
+#    Call Method          ${chrome_options}    add_argument    headless
+#    Call Method          ${chrome_options}    add_argument    disable-gpu
+#    Create Webdriver     Chrome               chrome_options=${chrome_options}
+#    Set Window Size      1500                 1500
+#    Go To                ${REDMINE}
+
+
+
+# these options for chromium webbrowser
 Go to Redmine
-    ${chrome_options} =  Evaluate             sys.modules['selenium.webdriver'].ChromeOptions()   sys, selenium.webdriver
-    Call Method          ${chrome_options}    add_argument    headless
-    Call Method          ${chrome_options}    add_argument    disable-gpu
-    Create Webdriver     Chrome               chrome_options=${chrome_options}
+    ${chromium_options}=   Evaluate             sys.modules['selenium.webdriver'].ChromeOptions()   sys, selenium.webdriver
+    ${chromium_options.binary_location}     Set Variable     /usr/bin/chromium-browser
+    Call Method          ${chromium_options}    add_argument    headless
+    Call Method          ${chromium_options}    add_argument    disable-gpu
+    Call Method          ${chromium_options}    add_argument    no-sandbox
+    Create Webdriver     Chrome               chrome_options=${chromium_options}
     Set Window Size      1500                 1500
     Go To                ${REDMINE}
+
+
+# these options for firefox webbrowser
+#Go to Redmine
+#    ${firefox_options}=   Evaluate             sys.modules['selenium.webdriver'].firefox.webdriver.Options()   sys, selenium.webdriver
+#    ${firefox_options.binary_location}     Set Variable     /usr/bin/firefox
+#    Call Method          ${firefox_options}    add_argument    -headless
+#    Create Webdriver     Firefox               firefox_options=${firefox_options}
+#    Set Window Size      1920                 1080
+#    Go To                ${REDMINE}
+
 
 Close Application
     Close Browser
