@@ -12,7 +12,3 @@ RUN apt update && \
     pip install -r requirements.txt && \
     cp -s /app/drivers/chromedriver /usr/bin/chromedriver && \
     cp -s /app/drivers/geckodriver /usr/bin/geckodriver
-
-# python install pyvirtualdisplay
-
-RUN chmod +x run.sh && ./run.sh
